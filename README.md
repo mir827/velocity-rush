@@ -1,4 +1,4 @@
-# Velocity Rush · Three Realms — v2.0.0
+# Velocity Rush · Three Realms — v2.0.1
 
 An original canvas exploration platformer. Restore nine lanterns across Sunlit Terraces, Tidal Observatory and Aurora Engine. Procedural original artwork and three original synthesized musical themes; no franchise characters, samples or copied assets.
 

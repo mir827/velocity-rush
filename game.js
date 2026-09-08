@@ -3,7 +3,7 @@ const music=new Music();
 const $ = id => document.getElementById(id);
 const canvas = $('game'), ctx = canvas.getContext('2d');
 const keys = {left:false,right:false,jump:false,boost:false};
-const VERSION='2.0.0';
+const VERSION='2.0.1';
 const stages=[
  {name:'01 · SUNLIT TERRACES',title:'The garden wakes',tip:'Learn the jump rhythm. Upper terraces hide star relics.',sky:['#193c65','#7b9fa0','#ffcf9a'],turf:'#a7f3b9',end:14000,gaps:[[2100,2220],[4800,4940],[7400,7560],[10300,10440],[12400,12550]],drones:[1600,3600,6100,9000,11500],beacons:[3100,6800,11100]},
  {name:'02 · TIDAL OBSERVATORY',title:'Across the moonwater',tip:'Stepping islands, tidal vents and hidden observatory ledges.',sky:['#112f4b','#326d88','#90c8cb'],turf:'#7fe6f2',end:14500,gaps:[[1800,1930],[4200,4360],[7000,7160],[9800,9950],[12700,12880]],drones:[2900,5500,8300,11000,13600],beacons:[3400,7700,11900]},
@@ -37,7 +37,7 @@ function step(dt){if(mode!=='playing')return;elapsed+=dt;noticeTimer-=dt;if(noti
  if(jumpBuffer>0&&coyote>0){player.vy=-760;player.grounded=false;coyote=0;jumpBuffer=0;tone(750,.13);burst(player.x,player.y+20,'#b2ffe1',7);}
  const oldY=player.y,oldX=player.x;player.vy+=(keys.jump&&player.vy<0?1350:2100)*dt;player.x=Math.max(22,Math.min(END+100,player.x+player.vx*dt));player.y+=player.vy*dt;let surface=inGap(player.x)?Infinity:ground(player.x);for(const p of platforms)if(player.x>p.x-10&&player.x<p.x+p.w+10&&oldY+player.r<=p.y+9&&player.vy>=0)surface=Math.min(surface,p.y);
  const follow=player.grounded&&!inGap(oldX)&&Math.abs(player.y+player.r-surface)<40;
- player.grounded=false;if(player.vy>=0&&player.y+player.r>=surface&&(oldY+player.r<=surface+24||follow)){player.y=surface-player.r;player.vy=0;player.grounded=true;}
+ player.grounded=false;if(player.vy>=0&&(player.y+player.r>=surface||follow)&&(oldY+player.r<=surface+24||follow)){player.y=surface-player.r;player.vy=0;player.grounded=true;}
  for(const c of prisms)if(!c.got&&Math.hypot(player.x-c.x,player.y-c.y)<40){c.got=true;score++;burst(c.x,c.y,'#ffdc83',6);tone(950+score%5*100,.065);}
  for(const e of enemies){if(!e.alive)continue;e.x=e.base+Math.sin(elapsed*1.8+e.base)*38;e.y=ground(e.x)-22;if(Math.abs(player.x-e.x)<38&&Math.abs(player.y-e.y)<39){if(player.vy>80&&oldY<e.y-20){e.alive=false;player.vy=-460;score+=3;burst(e.x,e.y,'#ff96b5',16);tone(240,.12,'square');}else if(player.inv<=0){score=Math.max(0,score-5);player.inv=1.6;player.vx=-Math.sign(player.vx||1)*280;player.vy=-350;burst(player.x,player.y,'#ffabac');notify('DRONE HIT · −5 prisms');tone(120,.2,'sawtooth');}}}
  for(const cp of checkpoints)if(player.x>=cp&&checkpoint<cp){checkpoint=cp;notify('CHECKPOINT LIT · Keep flying!');burst(cp,ground(cp)-80,'#8cffe0',22);tone(1000,.25);}
