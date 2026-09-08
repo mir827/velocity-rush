@@ -1,1 +1,13 @@
-{"name":"velocity-rush","version":"1.0.0","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","test":"node tests/browser.mjs"},"devDependencies":{"playwright":"1.58.2"}}
+{
+  "name": "velocity-rush",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node tests/campaign.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

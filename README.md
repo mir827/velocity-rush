@@ -1,37 +1,45 @@
-# Velocity Rush · Afterglow Run
+# Velocity Rush · Three Realms — v2.0.0
 
-An original, dependency-free canvas momentum platformer: a mint-armored courier races across floating sunset gardens. All art is procedural and all sound is synthesized locally; no franchise characters, copied assets, tracking, or remote services.
+An original canvas exploration platformer. Restore nine lanterns across Sunlit Terraces, Tidal Observatory and Aurora Engine. Procedural original artwork and three original synthesized musical themes; no franchise characters, samples or copied assets.
 
 ## Play
 
-- **A / D or ← / →**: accelerate; releasing preserves momentum.
-- **Space / W / ↑**: jump; hold for height. **Shift**: higher top speed.
-- **P**: pause/resume. **R** or **New run**: restart.
-- Touch devices have direction, boost, and jump buttons.
-- Gather gold prisms, stomp drones, light checkpoints, and reach the horizon. Falls and drone hits cost five prisms (never below zero). Falls return to the last checkpoint. Sound is opt-in.
+- **A / D or ← / →** move, **Space / W / ↑** jump (hold for height), **Shift** optional boost.
+- Default top speed **220** (previously 660), acceleration **420** (previously 1100). Boost 440.
+- **P** pause/resume; **R / New run** restarts the entire campaign. Next Stage continues your score and timer.
+- Touch supports simultaneous movement and jumping. Music starts on Start; mute and volume are in the header. Pause/backgrounding suspends the score.
+- Restore all three lanterns to unlock each exit. Checkpoint flags save your recovery position; falls cost five prisms, not campaign progress.
+- Find upper terraces and six hidden star relics per realm. Wind vents amplify held jumps. The observatory adds stepping islands; the engine adds timed pulse barriers (jump over them or wait for blue).
+- The campaign targets several minutes at the default pace, with optional upper-route exploration. Boost is not required.
 
 ## Run & verify
 
-Node.js 20+ and Python 3. Production has no dependencies.
+Node.js 20+, Python 3, installed Google Chrome:
 
 ```sh
 npm ci
 npm run build
 python3 -m http.server 4173 --directory dist
-# in another terminal, with Google Chrome installed:
+# another terminal
 npm test
+# same suite on the deployed release
+BASE_URL=https://mir827.github.io/velocity-rush/ LABEL=live-v2 npm test
 ```
 
-Browser tests use Playwright with installed Google Chrome, including a full keyboard-only course completion, collision fixtures, win/restart, desktop/mobile layouts, touch input and sound controls. Screenshots and the JSON report go to ignored `test-results/`. `BASE_URL=https://mir827.github.io/velocity-rush/ npm test` tests production. The `?test=1` URL exposes deterministic test fixtures only when explicitly requested.
+The real-time campaign test uses keyboard inputs only, reading state to time hazards, never teleporting or scaling time. Separate checkpoint fixtures are reset before traversal. It measures all stage durations and audio signal, tests mute/volume/pause, and uses native CDP multi-touch in portrait. Reports and screenshots are saved in ignored `test-results/`. Allow up to ten minutes per test invocation.
 
-## Deployment
+`?test=1` enables test state/fixtures; absent on the regular URL. Audio analyser proves a generated signal, not physical speaker output. Chrome mobile emulation is not a substitute for physical Safari/iOS testing. The main-route completion does not claim every optional relic has been collected.
 
-GitHub Pages serves the root of `main`. `index.html`, `style.css`, and `game.js` are the complete production site. `npm run build` also creates a standalone `dist/` copy.
+## Design research / originality
 
-## Accessibility & scope
+Consulted SEGA's official [Sonic Superstars overview](https://asia.sega.com/SonicSuperStars/en/) and [Adventure / zones](https://asia.sega.com/SonicSuperStars/en/adventure/) on 2026-09-09. The latter describes greenery/seaside, jungle, neon park and digital zones with differing traversal gimmicks. Applied only general principles: distinct regions, alternating movement challenges and recovery space, rewarding upper routes, and musical identity. Our courier, realms, terrain, lantern objectives and note sequences are original. No SEGA images, character designs, music, level layouts or trademarks are distributed in the game. This is a small independent browser game, not commercial Sonic feature parity.
 
-Keyboard-operable menus, visible focus, labeled controls, live checkpoint notices, reduced-motion trails, high-DPI canvas, responsive portrait/landscape layout, and automatic pause on focus loss. The gameplay itself is visual and is not screen-reader playable. One handcrafted rolling course, approximately 20–40 seconds with boost or cautious jumps.
+## Deployment & accessibility
+
+GitHub Pages serves the root of `main`: `index.html`, `style.css`, `game.js`, `music.js`. `npm run build` copies these to `dist/`. Version is visible in the header and test state.
+
+Keyboard menus, visible focus, labels, checkpoint announcements, reduced-motion trails, equal-axis canvas scaling and automatic blur pause. Gameplay remains visual and is not screen-reader playable. No tracking or runtime network dependencies.
 
 ## License
 
-MIT. Original code, artwork, and synthesized audio.
+MIT. Original code, artwork and synthesized score.
