@@ -1,11 +1,11 @@
-# Velocity Rush · Three Realms — v2.0.1
+# Velocity Rush · Three Realms — v2.1.0
 
-An original canvas exploration platformer. Restore nine lanterns across Sunlit Terraces, Tidal Observatory and Aurora Engine. Procedural original artwork and three original synthesized musical themes; no franchise characters, samples or copied assets.
+An original canvas exploration platformer. Restore nine lanterns across Sunlit Terraces, Tidal Observatory and Aurora Engine. Procedural original artwork and three original synthesized, layered musical themes; no franchise characters, samples or copied assets.
 
 ## Play
 
 - **A / D or ← / →** move, **Space / W / ↑** jump (hold for height), **Shift** optional boost.
-- Default top speed **220** (previously 660), acceleration **420** (previously 1100). Boost 440.
+- Default cruise speed **400**, acceleration **760**, and optional boost **540**. Camera lead and deliberate hazard signage keep this momentum readable rather than treating speed as one isolated number.
 - **P** pause/resume; **R / New run** restarts the entire campaign. Next Stage continues your score and timer.
 - Touch supports simultaneous movement and jumping. Music starts on Start; mute and volume are in the header. Pause/backgrounding suspends the score.
 - Restore all three lanterns to unlock each exit. Checkpoint flags save your recovery position; falls cost five prisms, not campaign progress.
