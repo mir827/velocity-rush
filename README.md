@@ -43,3 +43,12 @@ Keyboard menus, visible focus, labels, checkpoint announcements, reduced-motion 
 ## License
 
 MIT. Original code, artwork and synthesized score.
+
+## v2.3.0 — Afterglow Courier revision (2026-09-09)
+
+- Replaced the earlier live oscillator arrangement with **Afterglow Drift**, a 24-second, offline-rendered original electro/breakbeat cue. The playable Opus loop and uncompressed evaluation excerpt are in `assets/`; generation is reproducible in `scripts/render_afterglow_audio.py`.
+- Replaced the prior runner presentation with an original hoverboard courier: helmet/visor, messenger pack, coat, stabilizer board and gesture-driven silhouette. It is not a hedgehog/animal design and uses no Sonic assets.
+- Rebuilt foreground greenery as rounded canopy clusters and the three worlds as conservatory, observatory and aurora-engine illustration sets rather than repeating giant triangular palms.
+- Music research and asset/rights detail: [CREDITS.md](CREDITS.md). The dated SEGA sources are design-pacing references only; no proprietary music was listened to, copied, sampled or redistributed.
+
+Known validation boundary: browser audio was analyser-checked after a user gesture; this is not a claim of speaker-listening or subjective music approval. Chrome desktop and emulated touch were tested; no physical phone hardware was used.

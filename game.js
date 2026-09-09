@@ -3,7 +3,7 @@ const music=new Music();
 const $ = id => document.getElementById(id);
 const canvas = $('game'), ctx = canvas.getContext('2d');
 const keys = {left:false,right:false,jump:false,boost:false};
-const VERSION='2.2.0';
+const VERSION='2.3.0';
 const stages=[
  {name:'01 · SUNLIT TERRACES',title:'The garden wakes',tip:'Learn the jump rhythm. Upper terraces hide star relics.',sky:['#193c65','#7b9fa0','#ffcf9a'],turf:'#a7f3b9',end:14000,gaps:[[2100,2220],[4800,4940],[7400,7560],[10300,10440],[12400,12550]],drones:[1600,3600,6100,9000,11500],beacons:[3100,6800,11100]},
  {name:'02 · TIDAL OBSERVATORY',title:'Across the moonwater',tip:'Stepping islands, tidal vents and hidden observatory ledges.',sky:['#112f4b','#326d88','#90c8cb'],turf:'#7fe6f2',end:14500,gaps:[[1800,1930],[4200,4360],[7000,7160],[9800,9950],[12700,12880]],drones:[2900,5500,8300,11000,13600],beacons:[3400,7700,11900]},
@@ -54,13 +54,13 @@ function resize(){const r=canvas.getBoundingClientRect();W=r.width;H=r.height;co
 function polygon(points,fill){ctx.fillStyle=fill;ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fill();}
 function draw(){ctx.setTransform(canvas.width/view,0,0,canvas.height/720,0,0);const sky=ctx.createLinearGradient(0,0,0,720);sky.addColorStop(0,stages[stage].sky[0]);sky.addColorStop(.52,stages[stage].sky[1]);sky.addColorStop(1,stages[stage].sky[2]);ctx.fillStyle=sky;ctx.fillRect(0,0,view,720);
  ctx.fillStyle='#ffd4a6';ctx.shadowColor='#ffc89c';ctx.shadowBlur=60;ctx.beginPath();ctx.arc(view*.73-cam*.025,216,68,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
- // Three bespoke horizon sets: garden conservatories, moonwater observatories, and the aurora engine.
+ // Illustrated horizon sets: paneled conservatories, moonwater observatories, and a mechanical aurora engine.
  ctx.save();
  for(let i=0;i<9;i++){const x=((i*211-cam*.055)%(view+260)+view+260)%(view+260)-130;const y=126+(i%4)*31;
    ctx.globalAlpha=.13+(i%3)*.04;ctx.fillStyle=stage===0?'#f7e2ae':stage===1?'#b6f5ff':'#f1c9ff';
    ctx.beginPath();ctx.arc(x,y,2+(i%3),0,7);ctx.fill();}
  ctx.globalAlpha=1;
- if(stage===0){for(let x=-160;x<view+220;x+=260){ctx.fillStyle='#315b65';ctx.fillRect(x,245,18,175);ctx.strokeStyle='#91d5ae';ctx.lineWidth=7;ctx.beginPath();ctx.arc(x+9,210,76,Math.PI,0);ctx.stroke();ctx.fillStyle='#558b7c';polygon([[x-72,287],[x+9,168],[x+90,287]],'#558b7c');polygon([[x-35,245],[x+9,130],[x+53,245]],'#75bb98');}}
+ if(stage===0){for(let x=-160;x<view+220;x+=260){ctx.fillStyle='#315b65';ctx.fillRect(x,246,22,174);ctx.strokeStyle='#a4e7c4';ctx.lineWidth=6;ctx.beginPath();ctx.arc(x+11,228,70,Math.PI,0);ctx.stroke();ctx.fillStyle='#71ac91';ctx.fillRect(x-50,255,122,11);for(let j=0;j<4;j++){ctx.fillStyle=j%2?'#6b9c8e':'#82b9a0';ctx.fillRect(x-43+j*28,270-(j%2)*18,18,58+(j%2)*18);}}}
  else if(stage===1){for(let x=-200;x<view+250;x+=330){ctx.strokeStyle='#b8f4fa88';ctx.lineWidth=8;ctx.beginPath();ctx.arc(x+100,245,94,Math.PI,0);ctx.stroke();ctx.fillStyle='#79bdca44';ctx.fillRect(x+88,245,24,125);ctx.fillStyle='#d6ffff';ctx.beginPath();ctx.arc(x+100,245,8,0,7);ctx.fill();}}
  else {for(let x=-120;x<view+180;x+=230){ctx.fillStyle='#493b78';polygon([[x,365],[x+42,165],[x+75,365]],'#493b78');ctx.fillStyle='#aa8ed6';polygon([[x+25,318],[x+42,165],[x+55,318]],'#aa8ed6');ctx.strokeStyle='#e9b7ff99';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x+42,165);ctx.lineTo(x+160,235);ctx.lineTo(x+125,365);ctx.stroke();}}
  ctx.restore();
@@ -71,7 +71,7 @@ function draw(){ctx.setTransform(canvas.width/view,0,0,canvas.height/720,0,0);co
  for(let x=Math.floor(cam/20)*20-20;x<cam+view+40;x+=20){if(inGap(x+10))continue;const y=ground(x),ny=ground(x+20);polygon([[x,y],[x+21,ny],[x+21,790],[x,790]],'#193042');polygon([[x,y+13],[x+21,ny+13],[x+21,ny+56],[x,y+56]],'#294b57');
  const rock=(Math.floor(x/20)+stage*7)%4;ctx.fillStyle=['#42646a','#355760','#527274','#294b57'][rock];ctx.fillRect(x+3,y+27,12,7);ctx.fillStyle='#10273666';ctx.fillRect(x+4,y+48,16,3);
  ctx.strokeStyle=stages[stage].turf;ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+21,ny);ctx.stroke();if(x%100===0){polygon([[x+5,y+75],[x+40,y+105],[x+16,y+158]],'#2c4957');}}
- for(let x=Math.floor(cam/380)*380;x<cam+view+380;x+=380){if(inGap(x))continue;const y=ground(x);ctx.strokeStyle='#315c62';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(x,y-5);ctx.lineTo(x+9,y-106);ctx.stroke();if(stage===0){polygon([[x-55,y-78],[x+8,y-150],[x+75,y-83]],'#4f9a8d');polygon([[x-35,y-110],[x+8,y-172],[x+47,y-110]],'#77c5a2');}else if(stage===1){ctx.strokeStyle='#83ccda';ctx.lineWidth=5;ctx.beginPath();ctx.arc(x+8,y-130,36,0,7);ctx.moveTo(x-40,y-130);ctx.lineTo(x+55,y-130);ctx.stroke();}else{polygon([[x-22,y-25],[x-12,y-165],[x+12,y-210],[x+34,y-45]],'#b091ca');polygon([[x+12,y-210],[x+15,y-35],[x+34,y-45]],'#ebbef7');}}
+ for(let x=Math.floor(cam/380)*380;x<cam+view+380;x+=380){if(inGap(x))continue;const y=ground(x);ctx.strokeStyle='#315c62';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(x,y-5);ctx.lineTo(x+9,y-106);ctx.stroke();if(stage===0){ctx.fillStyle='#4f9a8d';for(const [dx,dy,r] of [[-22,-112,20],[12,-132,27],[45,-108,18]]){ctx.beginPath();ctx.arc(x+dx,y+dy,r,0,7);ctx.fill();}ctx.strokeStyle='#b5e6b9';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-20,y-90);ctx.quadraticCurveTo(x+18,y-145,x+55,y-95);ctx.stroke();}else if(stage===1){ctx.strokeStyle='#83ccda';ctx.lineWidth=5;ctx.beginPath();ctx.arc(x+8,y-130,36,0,7);ctx.moveTo(x-40,y-130);ctx.lineTo(x+55,y-130);ctx.stroke();}else{polygon([[x-22,y-25],[x-12,y-165],[x+12,y-210],[x+34,y-45]],'#b091ca');polygon([[x+12,y-210],[x+15,y-35],[x+34,y-45]],'#ebbef7');}}
  for(const p of platforms){polygon([[p.x,p.y],[p.x+p.w,p.y],[p.x+p.w-24,p.y+30],[p.x+30,p.y+40]],'#315a63');ctx.fillStyle='#1a3c49';ctx.fillRect(p.x+18,p.y+17,p.w-42,6);ctx.fillStyle=stages[stage].turf;ctx.fillRect(p.x,p.y,p.w,6);ctx.fillStyle='#ffffff38';ctx.fillRect(p.x+8,p.y+7,p.w*.42,2);}
  for(const r of relics)if(!r.got){ctx.font='30px system-ui';ctx.fillStyle='#fff0a8';ctx.fillText('✧',r.x-13,r.y+10);}
  for(const b of beacons){ctx.fillStyle=b.got?'#abffe5':'#ffdd91';ctx.fillRect(b.x-7,b.y-25,14,50);ctx.strokeStyle=ctx.fillStyle;ctx.lineWidth=3;ctx.beginPath();ctx.arc(b.x,b.y,30,0,7);ctx.stroke();ctx.font='bold 11px system-ui';ctx.fillText(b.got?'RESTORED':'LANTERN',b.x-30,b.y-42);}
@@ -86,15 +86,18 @@ function draw(){ctx.setTransform(canvas.width/view,0,0,canvas.height/720,0,0);co
  for(const e of enemies){if(!e.alive||e.x<cam-50||e.x>cam+view+50)continue;ctx.fillStyle='#171f3f';ctx.beginPath();ctx.ellipse(e.x,e.y,24,17,0,0,7);ctx.fill();ctx.strokeStyle='#ff91ac';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(e.x-31,e.y-18);ctx.lineTo(e.x-15,e.y-7);ctx.moveTo(e.x+31,e.y-18);ctx.lineTo(e.x+15,e.y-7);ctx.stroke();ctx.fillStyle='#ffacbb';ctx.fillRect(e.x-12,e.y-4,24,6);}
  const finishY=ground(END);ctx.strokeStyle='#b1ffe4';ctx.lineWidth=9;ctx.beginPath();ctx.roundRect(END-20,finishY-155,75,155,35);ctx.stroke();ctx.fillStyle='#99ffda20';ctx.fill();ctx.font='bold 12px system-ui';ctx.fillStyle='#d7fff1';ctx.fillText('HORIZON',END-17,finishY-175);
  for(const p of trail){ctx.globalAlpha=p.life/.22*.3;ctx.fillStyle='#8bffdc';ctx.beginPath();ctx.arc(p.x,p.y,player.r*.8,0,7);ctx.fill();}ctx.globalAlpha=1;
- ctx.save();ctx.translate(player.x,player.y);if(player.inv>0&&Math.floor(elapsed*14)%2)ctx.globalAlpha=.45;const face=player.vx< -10?-1:1;ctx.scale(face,1);const running=Math.min(1,Math.abs(player.vx)/400), bob=player.grounded?Math.sin(elapsed*(5+running*12))*running*3:0;if(!player.grounded)ctx.rotate(elapsed*10);ctx.translate(0,bob);
- // Animated original courier: scarf, expressive visor, articulated run legs and a spin silhouette.
- ctx.fillStyle='#071b2b77';ctx.beginPath();ctx.ellipse(0,25,28,6,0,0,7);ctx.fill();
- const stride=Math.sin(elapsed*(7+running*13))*8*running;ctx.strokeStyle='#ffcb87';ctx.lineWidth=8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-9,13);ctx.lineTo(-14+stride,25);ctx.moveTo(10,13);ctx.lineTo(15-stride,25);ctx.stroke();
- ctx.fillStyle='#ff9a79';polygon([[-13,-7],[-47,-15-stride*.4],[-31,0],[-54,9],[-14,10]],'#ff9a79');ctx.fillStyle='#ffd0a2';polygon([[-13,-9],[-39,-13],[-20,1],[-45,8],[-13,10]],'#ffd0a2');
- ctx.fillStyle='#51dcbf';ctx.beginPath();ctx.roundRect(-20,-22,40,40,15);ctx.fill();ctx.fillStyle='#8ff9d8';ctx.beginPath();ctx.roundRect(-14,-18,15,27,7);ctx.fill();
- polygon([[-13,-19],[-8,-37],[2,-20]],'#b7ffe8');polygon([[2,-20],[12,-34],[15,-15]],'#b7ffe8');
- ctx.fillStyle='#102b4c';ctx.beginPath();ctx.roundRect(-1,-14,27,16,7);ctx.fill();ctx.fillStyle='#b8fbff';ctx.fillRect(13,-10,7,5);ctx.fillStyle='#fff';ctx.fillRect(16,-9,2,2);
- ctx.fillStyle='#fff0c7';ctx.beginPath();ctx.roundRect(-18,12,16,9,4);ctx.fill();ctx.beginPath();ctx.roundRect(7,12,20,9,4);ctx.fill();ctx.restore();
+ ctx.save();ctx.translate(player.x,player.y);if(player.inv>0&&Math.floor(elapsed*14)%2)ctx.globalAlpha=.45;
+ // Original hoverboard courier: a compact helmet, messenger pack, coat and board — no animal anatomy.
+ const face=player.vx< -10?-1:1;ctx.scale(face,1);const run=Math.min(1,Math.abs(player.vx)/400), sway=Math.sin(elapsed*(5+run*10))*run;
+ ctx.fillStyle='#07152488';ctx.beginPath();ctx.ellipse(0,29,42,7,0,0,7);ctx.fill();
+ // luminous board and stabilizers
+ ctx.fillStyle='#162f4a';ctx.beginPath();ctx.roundRect(-38,18,76,11,6);ctx.fill();ctx.fillStyle='#69f0e0';ctx.fillRect(-25,26,50,3);ctx.fillStyle='#d5fbff';ctx.beginPath();ctx.arc(-27,23,5,0,7);ctx.arc(27,23,5,0,7);ctx.fill();
+ // trailing messenger coat, torso and cargo pack
+ ctx.fillStyle='#ec775f';polygon([[-17,-7],[-42,7+sway*5],[-30,17],[2,13],[-3,-9]],'#ec775f');ctx.fillStyle='#293e66';ctx.beginPath();ctx.roundRect(-20,-15,37,34,11);ctx.fill();ctx.fillStyle='#4e6fa0';ctx.fillRect(-22,-3,8,18);ctx.fillStyle='#ffc878';ctx.fillRect(-8,10,20,5);
+ // helmet, visor and antenna: unmistakably human-scale courier silhouette
+ ctx.fillStyle='#f6b37a';ctx.beginPath();ctx.ellipse(2,-27,20,19,0,0,7);ctx.fill();ctx.fillStyle='#1b3155';ctx.beginPath();ctx.roundRect(-17,-40,39,19,10);ctx.fill();ctx.fillStyle='#88f6f1';ctx.beginPath();ctx.roundRect(-10,-35,27,7,4);ctx.fill();ctx.fillStyle='#fff';ctx.fillRect(8,-33,5,2);
+ ctx.strokeStyle='#f6b37a';ctx.lineWidth=7;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(13,-5);ctx.lineTo(27,6+sway*6);ctx.lineTo(33,3);ctx.moveTo(-10,15);ctx.lineTo(-17,22);ctx.stroke();
+ ctx.restore();
  for(const p of particles){ctx.globalAlpha=Math.max(0,p.life/.6);ctx.fillStyle=p.color;ctx.fillRect(p.x-3,p.y-3,6,6);}ctx.globalAlpha=1;ctx.restore();
  // Route progress indicator.
  ctx.fillStyle='#ffffff1f';ctx.fillRect(0,716,view,4);ctx.fillStyle='#96ffda';ctx.fillRect(0,716,view*Math.min(1,player.x/END),4);
